@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.jjoe64.graphview.series.DataPoint;
-
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.nio.ByteBuffer;
@@ -22,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
     private byte[] serial_buffer = new byte [50];
     private byte[] input_buffer = new byte[4];
     private double input_data;
-    private BluetoothSerial bluetoothSerial;
-    private double glucoseConcentration;
 
+    private double glucoseConcentration;
+    //private BluetoothSerial bluetoothSerial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bluetoothSerial = new BluetoothSerial(
+      /*  bluetoothSerial = new BluetoothSerial(
                 this, new BluetoothSerial.MessageHandler() {
             public int read(int bufferSize, byte[] buffer) {
                 return doRead(bufferSize, buffer);
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(!bluetoothSerial.connected) {
             bluetoothSerial.connect();
-        }
+        }*/
 
     }
 
