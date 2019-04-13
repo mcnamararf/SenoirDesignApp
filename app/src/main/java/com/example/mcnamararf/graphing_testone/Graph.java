@@ -6,6 +6,8 @@ import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
@@ -23,6 +25,7 @@ public class Graph extends AppCompatActivity {
     private static final String TAG = "GraphActivity";
     PointsGraphSeries<DataPoint> xySeries;
 
+
     GraphView mScatterPlot;
 
     @Override
@@ -30,15 +33,15 @@ public class Graph extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-
         //Creating scatter plot
-        mScatterPlot = (GraphView) findViewById(R.id.graph1);
+        mScatterPlot = findViewById(R.id.graph1);
         createScatterPlot();
 
+        //Create a Toast when a point is clicked on
         xySeries.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
-            public void onTap(Series series1, DataPointInterface dataPoint) {
-                Toast.makeText(getApplicationContext(), "Series1: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
+            public void onTap(Series xySeries, DataPointInterface dataPoint) {
+                Toast.makeText(getApplicationContext(), "xyValue: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -52,24 +55,28 @@ public class Graph extends AppCompatActivity {
 
         //Sample BG Values
         int[] yArray =new int[]
-                {80,80,80,80,80,80,195,200,204,207,206,202,195,189,183,175,165,153,142,133,127,126,127,127,
-                 125,121,118,114,110,106,102,100,102,113,133,158,180,193,195,191,186,181};
+                {195,200,204,207,206,202,195,189,183,175,165,153,142,133,127,126,127,127,
+                 125,121,118,114,110,106,102,100,102,113,133,158,180,193,195,191,186,181,80,80,80,80,80,80,};
 
         //Generate add 5 to the x values and add the x and y values to the array list
         for(int i =0; i<42; i++){
-            x+=5;
+
             xyValueArray.add(new XYValue(x,yArray[i]));
+            x+=5;
         }
         for(int i = 0; i<xyValueArray.size(); i++){
-            int x2 = (int)xyValueArray.get(i).getX();
-            int y = (int) xyValueArray.get(i).getY();
-            xySeries.appendData(new DataPoint(x2,y),true,40);
+            int x2 = xyValueArray.get(i).getX();
+            int y  = xyValueArray.get(i).getY();
+            xySeries.appendData(new DataPoint(x2,y),true,42);
         }
+
+        //Sugar Value TextView Function
+        displaySugarValue(xyValueArray,5);
 
         //Properties
         xySeries.setShape(PointsGraphSeries.Shape.POINT);
         xySeries.setColor(Color.BLUE);
-        xySeries.setSize(20f);
+        xySeries.setSize(10f);
 
         //set Scrollable & Scalable
         mScatterPlot.getViewport().setScalable(true);
@@ -87,7 +94,19 @@ public class Graph extends AppCompatActivity {
         mScatterPlot.getViewport().setMaxX(180);
         mScatterPlot.getViewport().setMinX(0);
 
+        //Axis Labels
+        mScatterPlot.getGridLabelRenderer().setHorizontalAxisTitle("Time");
+        mScatterPlot.getGridLabelRenderer().setVerticalAxisTitle("mg/dl");
+
         //Plot
         mScatterPlot.addSeries(xySeries);
+    }
+
+    private void displaySugarValue(ArrayList<XYValue> xyValueArray,int index) {
+        //Test For Displaying Blood Sugar Value
+        String yTest = String.valueOf(xyValueArray.get(index).getY());
+        TextView sugarTextView = findViewById(R.id.sugarValue);
+        sugarTextView.setText(yTest);
+        sugarTextView.setTextColor(Color.BLACK);
     }
 }

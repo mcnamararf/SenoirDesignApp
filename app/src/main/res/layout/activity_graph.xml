@@ -8,9 +8,20 @@
     tools:context=".Graph">
 
 
+
     <com.jjoe64.graphview.GraphView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
         android:id="@+id/graph1"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="379dp" />
+
+    <TextView
+        android:id="@+id/sugarValue"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="50sp"
+        android:text=""
         />
+
 </RelativeLayout>
