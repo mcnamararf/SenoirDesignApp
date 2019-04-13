@@ -24,7 +24,8 @@ import java.util.Random;
 public class Graph extends AppCompatActivity {
     private static final String TAG = "GraphActivity";
     PointsGraphSeries<DataPoint> xySeries;
-
+    //xyValue array is a global array list
+    ArrayList<XYValue> xyValueArray = new ArrayList<>();
 
     GraphView mScatterPlot;
 
@@ -36,21 +37,15 @@ public class Graph extends AppCompatActivity {
         //Creating scatter plot
         mScatterPlot = findViewById(R.id.graph1);
         createScatterPlot();
+        //Displaying sugar value with toast and ontaplistener
+        displaySugarValue();
 
-        //Create a Toast when a point is clicked on
-        xySeries.setOnDataPointTapListener(new OnDataPointTapListener() {
-            @Override
-            public void onTap(Series xySeries, DataPointInterface dataPoint) {
-                Toast.makeText(getApplicationContext(), "xyValue: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void createScatterPlot() {
         Log.d(TAG,"createScatterPlot: Creating Scatter Plot");
         xySeries = new PointsGraphSeries();
 
-        ArrayList<XYValue> xyValueArray = new ArrayList<>();
         int x =0;
 
         //Sample BG Values
@@ -64,14 +59,12 @@ public class Graph extends AppCompatActivity {
             xyValueArray.add(new XYValue(x,yArray[i]));
             x+=5;
         }
+        //Append Data to Graph
         for(int i = 0; i<xyValueArray.size(); i++){
             int x2 = xyValueArray.get(i).getX();
             int y  = xyValueArray.get(i).getY();
-            xySeries.appendData(new DataPoint(x2,y),true,42);
+            xySeries.appendData(new DataPoint(x2,y),true,100);
         }
-
-        //Sugar Value TextView Function
-        displaySugarValue(xyValueArray,5);
 
         //Properties
         xySeries.setShape(PointsGraphSeries.Shape.POINT);
@@ -102,11 +95,46 @@ public class Graph extends AppCompatActivity {
         mScatterPlot.addSeries(xySeries);
     }
 
-    private void displaySugarValue(ArrayList<XYValue> xyValueArray,int index) {
+    private void displaySugarValue() {
         //Test For Displaying Blood Sugar Value
-        String yTest = String.valueOf(xyValueArray.get(index).getY());
-        TextView sugarTextView = findViewById(R.id.sugarValue);
-        sugarTextView.setText(yTest);
-        sugarTextView.setTextColor(Color.BLACK);
+        xySeries.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series xySeries, DataPointInterface dataPoint) {
+                //Convert data point from double to int
+                int yIntValue = (int) dataPoint.getY();
+                //Display text view on graph
+                TextView sugarTextView = findViewById(R.id.sugarValue);
+                determineBGRange(sugarTextView, yIntValue);
+                //Toast Value
+                Toast.makeText(getApplicationContext(), "BG Value: " + dataPoint, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void determineBGRange(TextView sugarTextView, int yIntValue) {
+        int highBG = 200;
+        int lowBG  = 100;
+
+        //Change to yellow if High BG
+        if(yIntValue>=highBG) {
+            String yValue = String.valueOf(yIntValue);
+            sugarTextView.setText(yValue);
+            sugarTextView.setBackgroundColor(Color.YELLOW);
+            sugarTextView.setTextColor(Color.BLACK);
+        }
+        //Change to red if Low BG
+        else if (yIntValue<=lowBG){
+            String yValue = String.valueOf(yIntValue);
+            sugarTextView.setText(yValue);
+            sugarTextView.setBackgroundColor(Color.WHITE);
+            sugarTextView.setTextColor(Color.RED);
+        }
+        //Change to black if normal BG
+        else{
+            String yValue = String.valueOf(yIntValue);
+            sugarTextView.setText(yValue);
+            sugarTextView.setBackgroundColor(Color.WHITE);
+            sugarTextView.setTextColor(Color.BLACK);
+        }
     }
 }

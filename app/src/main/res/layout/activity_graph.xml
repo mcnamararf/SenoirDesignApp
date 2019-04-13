@@ -18,10 +18,19 @@
     <TextView
         android:id="@+id/sugarValue"
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textSize="50sp"
         android:text=""
         />
 
+    <Button
+        android:id="@+id/btnAddPt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/graph1"
+        android:layout_marginTop="50dp"
+        android:text="Add Point" />
 </RelativeLayout>
