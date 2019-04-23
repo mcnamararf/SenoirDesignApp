@@ -19,9 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button;
 
     private String deviceNamePrefix = "HC-05";
-    private byte[] serial_buffer = new byte [50];
     private byte[] input_buffer = new byte[4];
-    private double input_data;
     private BluetoothSerial bluetoothSerial;
     private double glucoseConcentration;
 
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public double convertToGlucose(double voltage_in) {
-        double glucose = 0;
+        double glucose;
         glucose = (((-8 * Math.pow(10, -5)) * voltage_in) + 1.2662);
         return glucose;
     }
