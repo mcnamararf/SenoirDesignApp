@@ -1,15 +1,15 @@
 package com.example.mcnamararf.graphing_testone;
 
 public class XYValue {
-    private double x;
-    private double y;
+    private int x;
+    private int y;
 
-    public XYValue (double x, double y){
+    public XYValue (int x, int y){
         this.x = x;
         this.y = y;
     }
 
-    public double getX(){
+    public int getX(){
         return x;
     }
 
@@ -18,7 +18,7 @@ public class XYValue {
     }
 
 
-    public double getY(){
+    public int getY(){
         return y;
     }
 
